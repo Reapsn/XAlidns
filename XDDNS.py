@@ -69,21 +69,27 @@ class XDDNS:
 def watchDNS():
     jsonfile = open("config.json")
     json_config = json.load(jsonfile)
+    logEnabled = json_config["log"]
 
     xddns = XDDNS(json_config)
     util = DNSUtil()
 
     while (True):
 
-        print("ctime:" + time.ctime())
+        if logEnabled :
+            print("ctime:" + time.ctime())
         myServerFactIp = util.queryMyServerFactIpByIVCURD()
-        print("myServerFactIp:" + myServerFactIp)
+        if logEnabled:
+            print("myServerFactIp:" + myServerFactIp)
         dnsRecordIp = xddns.queryDomainRecordIp(json_config["RR"])
-        print("dnsRecordIp:" + dnsRecordIp)
+        if logEnabled:
+            print("dnsRecordIp:" + dnsRecordIp)
         if (myServerFactIp != dnsRecordIp):
-            print(xddns.updateDNSIp(json_config["RR"], myServerFactIp))
+            if logEnabled:
+                print(xddns.updateDNSIp(json_config["RR"], myServerFactIp))
 
-        print("")
+        if logEnabled:
+            print("")
         time.sleep(json_config["interval"])
 
 
