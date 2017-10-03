@@ -76,21 +76,26 @@ def watchDNS():
 
     while (True):
 
-        if logEnabled :
-            print("ctime:" + time.ctime())
-        myServerFactIp = util.queryMyServerFactIpByIVCURD()
-        if logEnabled:
-            print("myServerFactIp:" + myServerFactIp)
-        dnsRecordIp = xddns.queryDomainRecordIp(json_config["RR"])
-        if logEnabled:
-            print("dnsRecordIp:" + dnsRecordIp)
-        if (myServerFactIp != dnsRecordIp):
-            if logEnabled:
-                print(xddns.updateDNSIp(json_config["RR"], myServerFactIp))
+        try:
 
-        if logEnabled:
-            print("")
-        time.sleep(json_config["interval"])
+            if logEnabled :
+                print("ctime:" + time.ctime())
+            myServerFactIp = util.queryMyServerFactIpByIVCURD()
+            if logEnabled:
+                print("myServerFactIp:" + myServerFactIp)
+            dnsRecordIp = xddns.queryDomainRecordIp(json_config["RR"])
+            if logEnabled:
+                print("dnsRecordIp:" + dnsRecordIp)
+            if (myServerFactIp != dnsRecordIp):
+                if logEnabled:
+                    print(xddns.updateDNSIp(json_config["RR"], myServerFactIp))
+
+            if logEnabled:
+                print("")
+            time.sleep(json_config["interval"])
+
+        except Exception , e:
+            print('watchDNS:',e)
 
 
 if __name__ == "__main__":
