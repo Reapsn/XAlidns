@@ -66,7 +66,7 @@ class XDDNS:
 
 
 # @param interval 单位：秒
-def watchDNS(interval):
+def watchDNS():
     jsonfile = open("config.json")
     json_config = json.load(jsonfile)
 
@@ -75,6 +75,7 @@ def watchDNS(interval):
 
     while (True):
 
+        print("ctime:" + time.ctime())
         myServerFactIp = util.queryMyServerFactIpByIVCURD()
         print("myServerFactIp:" + myServerFactIp)
         dnsRecordIp = xddns.queryDomainRecordIp(json_config["RR"])
@@ -82,8 +83,9 @@ def watchDNS(interval):
         if (myServerFactIp != dnsRecordIp):
             print(xddns.updateDNSIp(json_config["RR"], myServerFactIp))
 
-        time.sleep(interval)
+        print("")
+        time.sleep(json_config["interval"])
 
 
 if __name__ == "__main__":
-    watchDNS(10 * 60)
+    watchDNS()
