@@ -3,6 +3,5 @@
   "secret": "",
   "Domain": "",
   "RR": "",
-  "interval": 600,
-  "log": false
+  "interval": 600
 }

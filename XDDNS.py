@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
 import json
+import logging
+import logging.config
 import time
 
 from aliyunsdkcore.client import AcsClient
@@ -64,12 +66,13 @@ class XDDNS:
             "cn-shanghai"
         )
 
-
 # @param interval 单位：秒
 def watchDNS():
+    logging.config.fileConfig('logging.conf')
+    logger = logging.getLogger("root.xddns")
+
     jsonfile = open("config.json")
     json_config = json.load(jsonfile)
-    logEnabled = json_config["log"]
 
     xddns = XDDNS(json_config)
     util = DNSUtil()
@@ -78,25 +81,24 @@ def watchDNS():
 
         try:
 
-            if logEnabled :
-                print("ctime:" + time.ctime())
             myServerFactIp = util.queryMyServerFactIpByIVCURD()
-            if logEnabled:
-                print("myServerFactIp:" + myServerFactIp)
+            logger.debug("myServerFactIp:" + myServerFactIp)
             dnsRecordIp = xddns.queryDomainRecordIp(json_config["RR"])
-            if logEnabled:
-                print("dnsRecordIp:" + dnsRecordIp)
+            logger.debug("dnsRecordIp:" + dnsRecordIp)
             if (myServerFactIp != dnsRecordIp):
-                if logEnabled:
-                    print(xddns.updateDNSIp(json_config["RR"], myServerFactIp))
+                logger.debug(xddns.updateDNSIp(json_config["RR"], myServerFactIp))
 
-            if logEnabled:
-                print("")
             time.sleep(json_config["interval"])
 
-        except Exception , e:
-            print('watchDNS:',e)
+        except Exception as e:
+            logger.error('watchDNS:', e)
 
 
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.DEBUG,
+                        format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
+                        datefmt='%a, %d %b %Y %H:%M:%S',
+                        filename='xddns.log',
+                        filemode='w')
+
     watchDNS()
