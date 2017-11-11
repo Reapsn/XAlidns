@@ -89,7 +89,7 @@ def watchDNS():
             time.sleep(json_config["interval"])
 
         except Exception as e:
-            logging.error('watchDNS:', e)
+            logging.error('watchDNS: {0}'.format(e))
 
 
 if __name__ == "__main__":
