@@ -69,8 +69,6 @@ class XDDNS:
 # @param interval 单位：秒
 def watchDNS():
 
-    logger = logging.getLogger("root.xddns")
-
     jsonfile = open("config.json")
     json_config = json.load(jsonfile)
 
@@ -82,16 +80,16 @@ def watchDNS():
         try:
 
             myServerFactIp = util.queryMyServerFactIpByIVCURD()
-            logger.debug("myServerFactIp:" + myServerFactIp)
+            logging.debug("myServerFactIp:" + myServerFactIp)
             dnsRecordIp = xddns.queryDomainRecordIp(json_config["RR"])
-            logger.debug("dnsRecordIp:" + dnsRecordIp)
+            logging.debug("dnsRecordIp:" + dnsRecordIp)
             if (myServerFactIp != dnsRecordIp):
-                logger.debug(xddns.updateDNSIp(json_config["RR"], myServerFactIp))
+                logging.debug(xddns.updateDNSIp(json_config["RR"], myServerFactIp))
 
             time.sleep(json_config["interval"])
 
         except Exception as e:
-            logger.error('watchDNS:', e)
+            logging.error('watchDNS:', e)
 
 
 if __name__ == "__main__":
