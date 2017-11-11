@@ -68,7 +68,7 @@ class XDDNS:
 
 # @param interval 单位：秒
 def watchDNS():
-    logging.config.fileConfig('logging.conf')
+
     logger = logging.getLogger("root.xddns")
 
     jsonfile = open("config.json")
@@ -95,10 +95,7 @@ def watchDNS():
 
 
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.DEBUG,
-                        format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
-                        datefmt='%a, %d %b %Y %H:%M:%S',
-                        filename='xddns.log',
-                        filemode='w')
+
+    logging.config.fileConfig('logging.conf')
 
     watchDNS()
