@@ -90,6 +90,7 @@ def watchDNS():
 
         except Exception as e:
             logging.error('watchDNS: {0}'.format(e))
+            time.sleep(10)
 
 
 if __name__ == "__main__":
