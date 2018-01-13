@@ -1,7 +1,7 @@
 {
-  "id": "",
-  "secret": "",
-  "Domain": "",
-  "RR": "",
+  "id": "my-aliyun-id",
+  "secret": "my-aliyun-secret",
+  "Domain": "my-aliyun-domain",
+  "RR": ["my-aliyun-rr1", "my-aliyun-rr2"],
   "interval": 600
 }

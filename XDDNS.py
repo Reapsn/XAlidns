@@ -75,22 +75,29 @@ def watchDNS():
     xddns = XDDNS(json_config)
     util = DNSUtil()
 
+    rr_array = json_config["RR"]
+
+
+
     while (True):
-
         try:
-
             myServerFactIp = util.queryMyServerFactIpByIVCURD()
             logging.debug("myServerFactIp:" + myServerFactIp)
-            dnsRecordIp = xddns.queryDomainRecordIp(json_config["RR"])
-            logging.debug("dnsRecordIp:" + dnsRecordIp)
-            if (myServerFactIp != dnsRecordIp):
-                logging.debug(xddns.updateDNSIp(json_config["RR"], myServerFactIp))
-
-            time.sleep(json_config["interval"])
-
         except Exception as e:
             logging.error('watchDNS: {0}'.format(e))
             time.sleep(10)
+            continue
+
+        for i in range(len(rr_array)):
+            try:
+                dnsRecordIp = xddns.queryDomainRecordIp(rr_array[i])
+                logging.debug("rr:" + rr_array[i] + ", dnsRecordIp:" + dnsRecordIp)
+                if (myServerFactIp != dnsRecordIp):
+                    logging.debug(xddns.updateDNSIp(rr_array[i], myServerFactIp))
+            except Exception as e:
+                logging.error('watchDNS: {0}'.format(e))
+            time.sleep(10)
+        time.sleep(json_config["interval"])
 
 
 if __name__ == "__main__":
